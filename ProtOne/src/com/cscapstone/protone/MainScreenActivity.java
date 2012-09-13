@@ -33,7 +33,7 @@ public class MainScreenActivity extends Activity implements LocationListener {
         Criteria criteria = new Criteria();
     	provider = locationManager.getBestProvider(criteria, false);
     	locationManager.requestLocationUpdates(provider, 0, 1, this);
-    	checkForUpdates();
+    	updateLocation(locationManager.getLastKnownLocation(provider));
     }
 
     @Override
@@ -53,17 +53,7 @@ public class MainScreenActivity extends Activity implements LocationListener {
     }
     
 	public void onLocationChanged(Location location) {
-		if(location != null){
-			int log = (int) (location.getLongitude());
-			int lat = (int) (location.getLatitude());
-			latitudeView.setText(String.valueOf(lat));
-			longitudeView.setText(String.valueOf(log));
-		}
-		else
-		{
-			latitudeView.setText("Location Not Available");
-    		longitudeView.setText("Location Not Available");
-		}
+		updateLocation(location);
 	}
 
 	public void onProviderDisabled(String provider) {
@@ -81,13 +71,18 @@ public class MainScreenActivity extends Activity implements LocationListener {
 		
 	}
 	
-    private void checkForUpdates(){
-    	Location location = locationManager.getLastKnownLocation(provider);
+    private void updateLocation(Location location){
+    	final double testLat = 56.0;
+    	final double testLongi = 120.0;
     	if(location != null){
-			int log = (int) (location.getLongitude());
-			int lat = (int) (location.getLatitude());
-			latitudeView.setText(String.valueOf(lat));
-			longitudeView.setText(String.valueOf(log));
+    		if( (int)location.getLatitude() == testLat && (int)location.getLongitude() == testLongi ){
+    			new AlertDialog.Builder(this).setTitle("Location Found!").setMessage("You have found a building")
+    			.setPositiveButton("Show Details", null).setNeutralButton("Cancel", null).show();
+    		}
+				int log = (int) (location.getLongitude());
+				int lat = (int) (location.getLatitude());
+				latitudeView.setText(String.valueOf(lat));
+				longitudeView.setText(String.valueOf(log));
 		}
 		else
 		{
