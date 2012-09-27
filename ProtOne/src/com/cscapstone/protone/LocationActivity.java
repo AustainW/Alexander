@@ -4,16 +4,18 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Menu;
 import android.widget.TextView;
 
-public class MainScreenActivity extends Activity implements LocationListener {
+public class LocationActivity extends Activity implements LocationListener {
 
 	private LocationManager locationManager;
 	private String provider;
@@ -77,7 +79,11 @@ public class MainScreenActivity extends Activity implements LocationListener {
     	if(location != null){
     		if( (int)location.getLatitude() == testLat && (int)location.getLongitude() == testLongi ){
     			new AlertDialog.Builder(this).setTitle("Location Found!").setMessage("You have found a building")
-    			.setPositiveButton("Show Details", null).setNeutralButton("Cancel", null).show();
+    			.setPositiveButton("Show Details",new DialogInterface.OnClickListener(){
+					public void onClick(DialogInterface dialog, int which) {
+							new ShowBuildingInfo().execute();
+					}
+    			}).setNeutralButton("Cancel", null).show();
     		}
 				int log = (int) (location.getLongitude());
 				int lat = (int) (location.getLatitude());
@@ -88,6 +94,18 @@ public class MainScreenActivity extends Activity implements LocationListener {
 		{
 			latitudeView.setText("Location Not Available");
     		longitudeView.setText("Location Not Available");
+		}
+    	
+    }
+    
+    class ShowBuildingInfo extends AsyncTask<String, String, String>{
+
+		@Override
+		protected String doInBackground(String... params) {
+			String building = "";
+			 
+			
+			return null;
 		}
     	
     }
