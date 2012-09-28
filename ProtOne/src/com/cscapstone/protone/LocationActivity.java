@@ -22,6 +22,9 @@ public class LocationActivity extends Activity implements LocationListener {
 	private TextView latitudeView;
 	private TextView longitudeView;
 	
+	//url for location data
+	private static String url_location_data = "";
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +98,6 @@ public class LocationActivity extends Activity implements LocationListener {
 			latitudeView.setText("Location Not Available");
     		longitudeView.setText("Location Not Available");
 		}
-    	
     }
     
     class ShowBuildingInfo extends AsyncTask<String, String, String>{
@@ -103,11 +105,10 @@ public class LocationActivity extends Activity implements LocationListener {
 		@Override
 		protected String doInBackground(String... params) {
 			String building = "";
-			 
+			
 			
 			return null;
 		}
     	
     }
-    
 }
