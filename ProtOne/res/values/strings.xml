@@ -7,7 +7,9 @@
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="title_activity_location">LocationActivity</string>
-    <string name="welcome_button_text">Get Started</string><string name="welcome_text">Welcome to the Team Demacia Test App. Click the button below to get started</string>
-    
+    <string name="welcome_button_text">Get Started</string>
+    <string name="welcome_text">Welcome to the Team Demacia Test App. Click the button below to get started</string>
+    <string name="title_activity_info">InfoActivity</string>
+    <string name="poi_url">http://testurl.com</string>
 
 </resources>
