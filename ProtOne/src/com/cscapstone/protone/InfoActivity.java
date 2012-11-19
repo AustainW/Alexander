@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
+
 import com.google.gson.*;
 
 public class InfoActivity extends ListActivity {
@@ -42,7 +45,7 @@ public class InfoActivity extends ListActivity {
         root.addView(progressBar);
         */
         
-        DownloadTask downloadTask = new DownloadTask();
+        PointOfInterestTask downloadTask = new PointOfInterestTask();
         
         
         
@@ -56,15 +59,16 @@ public class InfoActivity extends ListActivity {
     }
     
     
-    private class DownloadTask extends AsyncTask<String, Integer, ArrayList>{
+    private class PointOfInterestTask extends AsyncTask<String, Integer, ArrayList>{
 
     	
     	
-    	private HttpURLConnection sendPOIData(String poi) throws IOException{
+    	private ArrayList sendPOIData(String poi) throws IOException{
             
-            InputStream iStream = null;
-            Gson gson = new Gson();
-            ArrayList jList = new ArrayList();
+    		BufferedReader rd = null; 
+            StringBuilder sb = null; 
+            String line = null; 
+            ArrayList<String> data = new ArrayList<String>();
             try{
                 URL url = new URL(getString(R.string.poi_url));
                 /** Creating an http connection to communicate with url */
@@ -72,7 +76,6 @@ public class InfoActivity extends ListActivity {
                 /** Allow inputs */
                 urlConnection.setDoInput(true);
                 /** Allow outputs */
-                urlConnection.setDoOutput(true);
                 /** Use a cached copy */
                 urlConnection.setDefaultUseCaches(true);
                 
@@ -80,15 +83,21 @@ public class InfoActivity extends ListActivity {
                 urlConnection.connect();
                 
                 /** Sending data to the server */
-                urlConnection.setRequestMethod("GET");
                 
                 DataOutputStream dos = new DataOutputStream( urlConnection.getOutputStream() );
                 
                 dos.writeBytes("point of interest:" + poi + "\r\n");
                 
-                dos.flush();
+                dos.flush();  
+                rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream())); 
+                sb = new StringBuilder(); 
+
+                while ((line = rd.readLine()) != null) { 
+                	data.add(line);
+                } 
+                System.out.println("body=" + data.get(0).toString()); 
                 
-                return urlConnection;
+                return data;
      
             }catch(Exception e){
                 Log.d("Exception while downloading url", e.toString());
@@ -98,6 +107,7 @@ public class InfoActivity extends ListActivity {
         }
     	
     	
+    	
     	@Override
     	protected void onPreExecute(){
     		
@@ -105,16 +115,29 @@ public class InfoActivity extends ListActivity {
     	
 		@Override
 		protected ArrayList doInBackground(String... poi) {
+			ArrayList data = null;
 			try{
-				
+				data = sendPOIData(poi[0]);
 			}
 			catch(Exception e){
-				
+				Log.d("Background Task", e.toString());
 			}
 			
-			return null;
+			return data;
 		}
     	
+		 protected void onPostExecute(ArrayList data) {
+	         /** Getting a reference to ImageView to display the
+	          * downloaded image
+	          */
+	         
+	 
+	         /** Displaying the downloaded image */
+	            
+	 
+	         /** Showing a message, on completion of download process */
+	         Toast.makeText(getBaseContext(), "POI data downloaded successfully", Toast.LENGTH_SHORT).show();
+	     }
     }
     
 }
