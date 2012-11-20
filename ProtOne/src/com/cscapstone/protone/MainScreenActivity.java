@@ -22,8 +22,8 @@ public class MainScreenActivity extends Activity {
         startButton.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				//Intent i = new Intent(getApplicationContext(), LocationActivity.class);
-				//startActivity(i);
+				Intent i = new Intent(getApplicationContext(), InfoActivity.class);
+				startActivity(i);
 			}
 		});
     }

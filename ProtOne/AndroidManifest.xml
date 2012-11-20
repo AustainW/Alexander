@@ -26,16 +26,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LocationActivity"
-            android:label="@string/title_activity_location" >
-        </activity>
-        <activity
             android:name=".InfoActivity"
             android:label="@string/title_activity_info" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
     </application>

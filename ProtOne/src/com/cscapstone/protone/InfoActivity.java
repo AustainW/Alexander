@@ -10,27 +10,29 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import org.json.JSONObject;
 
-import android.annotation.TargetApi;
 import android.app.ListActivity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.*;
 
 public class InfoActivity extends ListActivity {
 
-	ArrayAdapter mInfoAdapter;
+	private ArrayAdapter<String> mInfoAdapter;
+	private ListView factsListView;
+	private InfoActivity infoActivityInstance = null;
 	
-    @TargetApi(11)
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        infoActivityInstance = this;
         
         /*
         // Create a progress bar to display while the list loads
@@ -46,10 +48,7 @@ public class InfoActivity extends ListActivity {
         */
         
         PointOfInterestTask downloadTask = new PointOfInterestTask();
-        
-        
-        
-        setContentView(R.layout.activity_info);
+        downloadTask.execute("Morken");
     }
 
     @Override
@@ -75,27 +74,23 @@ public class InfoActivity extends ListActivity {
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 /** Allow inputs */
                 urlConnection.setDoInput(true);
-                /** Allow outputs */
-                /** Use a cached copy */
-                urlConnection.setDefaultUseCaches(true);
-                
                 /** Connecting to url */
                 urlConnection.connect();
                 
                 /** Sending data to the server */
                 
-                DataOutputStream dos = new DataOutputStream( urlConnection.getOutputStream() );
+                //DataOutputStream dos = new DataOutputStream( urlConnection.getOutputStream() );
                 
-                dos.writeBytes("point of interest:" + poi + "\r\n");
+                //dos.writeBytes("point of interest:" + poi + "\r\n");
                 
-                dos.flush();  
+                //dos.flush();  
                 rd = new BufferedReader(new InputStreamReader(urlConnection.getInputStream())); 
                 sb = new StringBuilder(); 
 
                 while ((line = rd.readLine()) != null) { 
                 	data.add(line);
                 } 
-                System.out.println("body=" + data.get(0).toString()); 
+                System.out.println("body=" + data.get(1).toString()); 
                 
                 return data;
      
@@ -127,17 +122,19 @@ public class InfoActivity extends ListActivity {
 		}
     	
 		 protected void onPostExecute(ArrayList data) {
-	         /** Getting a reference to ImageView to display the
-	          * downloaded image
-	          */
-	         
+	         /** Load passed in ArrayList into a simple list adapter */
+			 mInfoAdapter = new ArrayAdapter<String>(infoActivityInstance, R.layout.row, data);
 	 
-	         /** Displaying the downloaded image */
-	            
+	         /** Set the ArrayAdapter to this instance of InfoActivity */
+	         infoActivityInstance.setListAdapter(mInfoAdapter);
 	 
 	         /** Showing a message, on completion of download process */
 	         Toast.makeText(getBaseContext(), "POI data downloaded successfully", Toast.LENGTH_SHORT).show();
 	     }
     }
+    
+    
+    
+    
     
 }
