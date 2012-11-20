@@ -10,6 +10,7 @@
     <string name="welcome_button_text">Get Started</string>
     <string name="welcome_text">Welcome to the Team Demacia Test App. Click the button below to get started</string>
     <string name="title_activity_info">InfoActivity</string>
-    <string name="poi_url">http://testurl.com</string>
+    <string name="poi_url">http://www.plu.edu</string>
+    <string name="main_no_items">No Items</string>
 
 </resources>
