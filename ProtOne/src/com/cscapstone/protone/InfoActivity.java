@@ -28,12 +28,14 @@ public class InfoActivity extends ListActivity {
 	private ArrayAdapter<String> mInfoAdapter;
 	private ListView factsListView;
 	private InfoActivity infoActivityInstance = null;
+	private TextView poiName;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         infoActivityInstance = this;
-        
+        //poiName = (TextView) findViewById(R.id.pointOfInterestName);
+        //poiName.setText("Reike");
         /*
         // Create a progress bar to display while the list loads
         ProgressBar progressBar = new ProgressBar(this);
@@ -101,8 +103,6 @@ public class InfoActivity extends ListActivity {
             
         }
     	
-    	
-    	
     	@Override
     	protected void onPreExecute(){
     		
@@ -117,8 +117,13 @@ public class InfoActivity extends ListActivity {
 			catch(Exception e){
 				Log.d("Background Task", e.toString());
 			}
-			
-			return data;
+			if(!data.isEmpty()){
+				
+				return data;
+			}
+			else{ 
+				return null;
+			}
 		}
     	
 		 protected void onPostExecute(ArrayList data) {
